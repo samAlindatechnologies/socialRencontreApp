@@ -49,7 +49,7 @@ render(){
  <Text style={styles.description}>Vous avez oublié votre mot de passe? Nous vous enverons un lien pour y remédier </Text>
  
  <TouchableOpacity style={styles.button}   onPress={() => {
-  this.props.navigation.navigate("signIn");
+  this.props.navigation.navigate("Login");
   }} >
   <Text style={styles.buttonText}>Retour</Text>
   </TouchableOpacity>

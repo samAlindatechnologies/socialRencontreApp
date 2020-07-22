@@ -11,6 +11,7 @@
     "@babel/core": "^7.10.4",
     "@babel/runtime": "^7.10.4",
     "@expo/vector-icons": "^10.2.0",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/bottom-tabs": "^5.7.1",
     "@react-navigation/core": "^5.11.1",

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -6,11 +6,30 @@ import Login from '../Screens/SignInScreen';
 import Signup from '../Screens/SignUpScreen';
 import Home from '../Screens/HomeScreen';
 import RestPassword from '../Screens/ForgotPassword';
+// import { View, ActivityIndicator, } from 'react-native';
 
 const Stack = createStackNavigator();
+// const AuthStack = createStackNavigator({Login : Login})
 
-function MyStack() {
-  return (
+// class AuthLoadingScreen extends Component {
+//   constructor(props) {
+//     super(props);
+//     this._loadData();
+//   }
+//   render() {
+//     return(
+//       <View>
+
+//       </View>
+//     )
+//   }
+// }
+
+
+export default class AppContainer extends Component {
+  render() {
+    return (
+  <NavigationContainer>
     <Stack.Navigator
       initialRouteName="Login"
       screenOptions={{
@@ -44,13 +63,7 @@ function MyStack() {
        options={{ header: () => null, animationEnabled: false }}
       />
     </Stack.Navigator>
-  );
-}
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <MyStack />
     </NavigationContainer>
   );
-}
+  }
+   }

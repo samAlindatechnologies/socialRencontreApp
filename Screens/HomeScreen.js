@@ -1,8 +1,8 @@
 // components/dashboard.js
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import firebase from '../database/Fire';
+import { StyleSheet, View, Text } from 'react-native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons'
@@ -18,7 +18,7 @@ class Home extends Component {
 
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: "black" }}>Home!</Text>
+        <Text style={{ color: "black" }}>Home!</Text> 
       </View>
     );
   }
@@ -30,43 +30,17 @@ class Message extends Component {
   render() {
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' , color: "black"}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Message!</Text>
       </View>
     );
   }
 }
 export default class HomeScreen extends Component {
-  constructor() {
-    super();
-    this.state = { 
-      uid: ''
-    }
-  }
-
-  signOut = () => {
-    firebase.auth().signOut().then(() => {
-      this.props.navigation.navigate('Login')
-    })
-    .catch(error => this.setState({ errorMessage: error.message }))
-  }  
 
   render() {
-    this.state = { 
-      displayName: firebase.auth().currentUser.displayName,
-      uid: firebase.auth().currentUser.uid
-    }    
     return (
       <>
-     
-
-        <Button
-          color="#3740FE"
-          title="Logout"
-          onPress={() => this.signOut()}
-        />
-
-
       <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{

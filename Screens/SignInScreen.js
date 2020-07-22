@@ -4,48 +4,57 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import firebase from '../database/Fire';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Login extends Component {
-  
   constructor() {
     super();
     this.state = { 
       email: '', 
       password: '',
-      isLoading: false
+      isLoading: false,
+      uid:''
     }
   }
-
+onSubmit = () => {this.setState()}
   updateInputVal = (val, prop) => {
     const state = this.state;
     state[prop] = val;
     this.setState(state);
   }
 
-  userLogin = () => {
+  userLogin = async() => {
     if(this.state.email === '' && this.state.password === '') {
       Alert.alert('Enter details to signin!')
-    } else {
+    } 
+//     else if (firebase.auth().currentUser.email === this.state.email && firebase.auth().currentUser.password === this.state.password) {
+// Alert.alert('email ou mot de passe incorrect!')
+//     } 
+    else {
       this.setState({
         isLoading: true,
       })
+      await AsyncStorage.setItem('isLoggedIn', '1')
       firebase
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((res) => {
         // console.log(res)
-        // console.log('User logged-in successfully!')
         this.setState({
           isLoading: false,
           email: '', 
-          password: ''
+          password: '',
+          uid: res.user.uid
         })
         this.props.navigation.navigate('Home')
       })
       .catch(error => this.setState({ errorMessage: error.message }))
     }
+    // let uid = this.state.uid;
+    // console.log(uid);
   }
+
+
 
   render() {
     if(this.state.isLoading){
@@ -55,6 +64,7 @@ export default class Login extends Component {
         </View>
       )
     }    
+
     return (
       <>
         <LinearGradient
@@ -109,7 +119,8 @@ export default class Login extends Component {
           style={styles.underButton}
           onPress={() => this.props.navigation.navigate('RestPassword')}>
           Mot de passe oublié ?
-        </Text>                         
+        </Text>      
+                            
       </View>
       </SafeAreaView>
       </KeyboardAwareScrollView>
