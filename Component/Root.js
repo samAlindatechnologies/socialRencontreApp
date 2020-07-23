@@ -1,37 +1,51 @@
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import Login from '../Screens/SignInScreen';
 import Signup from '../Screens/SignUpScreen';
 import Home from '../Screens/HomeScreen';
 import RestPassword from '../Screens/ForgotPassword';
-// import { View, ActivityIndicator, } from 'react-native';
+import { View, ActivityIndicator, StatusBar, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 // const AuthStack = createStackNavigator({Login : Login})
 
-// class AuthLoadingScreen extends Component {
-//   constructor(props) {
-//     super(props);
-//     this._loadData();
-//   }
-//   render() {
-//     return(
-//       <View>
+class AuthLoadingScreen extends Component {
+  constructor(props) {
+    super(props);
+    this._loadData();
+  }
+  render() {
+    return(
+      <View style={styles.activity}>
+        <ActivityIndicator />
+        <StatusBar barStyle="default"/>
+      </View>
+    )
+  }
+  _loadData= async() => {
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    this.props.navigation.navigate(isLoggedIn !== '1' ? 'Login' : 'Home')
+  }
+}
 
-//       </View>
-//     )
-//   }
-// }
 
+const styles = StyleSheet.create({
+  activity: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+   
+  }
+});
 
 export default class AppContainer extends Component {
   render() {
     return (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="AuthLoading"
       screenOptions={{
         headerTitleAlign: 'center',
         headerStyle: {
@@ -42,6 +56,11 @@ export default class AppContainer extends Component {
           fontWeight: 'bold',
         },
       }}>
+        <Stack.Screen 
+        name="AuthLoading" 
+        component={AuthLoadingScreen} 
+        options={{ header: () => null, animationEnabled: false }}
+      />
       <Stack.Screen 
         name="Login" 
         component={Login} 

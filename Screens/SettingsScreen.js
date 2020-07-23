@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, Button  } from "react-native";
-
+import AsyncStorage from '@react-native-community/async-storage';
 import firebase from '../database/Fire';
 class SettingsScreen extends Component {
   
@@ -12,11 +12,13 @@ class SettingsScreen extends Component {
     }
   }
 
-  signOut = () => {
-    firebase.auth().signOut().then(() => {
-      this.props.navigation.navigate('Login')
-    })
-    .catch(error => this.setState({ errorMessage: error.message }))
+  signOut = async() => {
+    // firebase.auth().signOut().then(() => {
+    //   this.props.navigation.navigate('Login')
+    // })
+    // .catch(error => this.setState({ errorMessage: error.message }))
+await AsyncStorage.clear();
+this.props.navigation.navigate('Login')
   }  
 
   render() {
