@@ -13,7 +13,8 @@ export default class Login extends Component {
       email: '', 
       password: '',
       isLoading: false,
-      uid:''
+      uid:'',
+      name: ''
     }
   }
 onSubmit = () => {this.setState()}
@@ -44,14 +45,15 @@ onSubmit = () => {this.setState()}
           isLoading: false,
           email: '', 
           password: '',
-          uid: res.user.uid
+          uid: '',
+          name: res.user.displayName
         })
+        console.log(this.state.name);
         this.props.navigation.navigate('Home')
       })
       .catch(error => this.setState({ errorMessage: error.message }))
     }
-    // let uid = this.state.uid;
-    // console.log(uid);
+
   }
 
 
@@ -68,9 +70,9 @@ onSubmit = () => {this.setState()}
     return (
       <>
         <LinearGradient
-        colors={["#051923", "#003554", "#0582CA", "#0582CA"]}
+        colors={[ "#003554","#051923", "#0582CA", "#caf0f8"]}
         start={{ x: 1, y: 0.5 }}
-        end={{ x: 1, y: 0 }}
+        end={{ x: 0, y: 1 }}
         style={{
           position: "absolute",
           left: 0,

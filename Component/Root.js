@@ -7,7 +7,7 @@ import Home from '../Screens/HomeScreen';
 import RestPassword from '../Screens/ForgotPassword';
 import { View, ActivityIndicator, StatusBar, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
+// import {createAppContainer, createSwitchNavigator } from 'react-navigation';
 const Stack = createStackNavigator();
 // const AuthStack = createStackNavigator({Login : Login})
 
@@ -40,10 +40,30 @@ const styles = StyleSheet.create({
   }
 });
 
+
+
+
+
+// export default createAppContainer(createSwitchNavigator(
+  
+//   {
+    
+//     AuthLoading: AuthLoadingScreen,
+//     Login : Login,
+//     Signup:Signup,
+//     Home : Home,
+//     RestPassword: RestPassword
+//   },
+//   {
+//     initialRouteName: 'AuthLoading'
+//   }
+// ))
+
+
 export default class AppContainer extends Component {
   render() {
     return (
-  <NavigationContainer>
+  <NavigationContainer> 
     <Stack.Navigator
       initialRouteName="AuthLoading"
       screenOptions={{
@@ -54,7 +74,7 @@ export default class AppContainer extends Component {
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
-        },
+        }, 
       }}>
         <Stack.Screen 
         name="AuthLoading" 

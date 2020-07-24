@@ -7,52 +7,26 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons'
 import SettingsScreen from "./SettingsScreen"
+import MessagesScreen from "./MessagesScreen"
+import SocialScreen from "./SocialScreen"
 import firebase from '../database/Fire';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this._userName();
-  }
-  render() {
-  console.log(firebase.auth().currentUser)
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: "black" }}>Home! 
-        {/* {this.userName()} */}
-        </Text> 
-      </View>
-    );
-  }
-  _userName= async() => {
-    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-    this.props.navigation.navigate(isLoggedIn !== '1' ? 'Login' : 'Home')
-  }
-}
 
 
 
-class Message extends Component {
-  render() {
 
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Message!</Text>
-      </View>
-    );
-  }
-}
 export default class HomeScreen extends Component {
 
   render() {
     return (
       <>
       <Tab.Navigator
-      initialRouteName="Home"
+      // initialRouteName="Home"
       tabBarOptions={{
         activeTintColor: "tomato",
         inactiveTintColor: "grey"
@@ -74,7 +48,7 @@ export default class HomeScreen extends Component {
           component={SettingsScreen}
            />
         <Tab.Screen
-         name="Home"
+         name="SocialScreen"
          options={{
           tabBarLabel: "",
           tabBarIcon: ({color, size}) => (
@@ -86,11 +60,11 @@ export default class HomeScreen extends Component {
             />
           )
         }}
-          component={Home} 
+          component={SocialScreen} 
           />
   
              <Tab.Screen
-         name="Message"
+         name="MessagesScreen"
          options={{
            tabBarLabel: "",
            tabBarIcon: ({color, size}) => (
@@ -102,7 +76,7 @@ export default class HomeScreen extends Component {
              />
            )
          }}
-          component={Message}
+          component={MessagesScreen}
            />
       </Tab.Navigator>
       {/* </View> */}
