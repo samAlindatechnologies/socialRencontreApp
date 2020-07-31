@@ -1,30 +1,19 @@
-// components/dashboard.js
-
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-
+import { StyleSheet} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons'
 import SettingsScreen from "./SettingsScreen"
 import MessagesScreen from "./MessagesScreen"
 import SocialScreen from "./SocialScreen"
-import firebase from '../database/Fire';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
-
-
-
-
-
 
 export default class HomeScreen extends Component {
 
   render() {
     return (
       <>
+
       <Tab.Navigator
       // initialRouteName="Home"
       tabBarOptions={{
@@ -32,6 +21,21 @@ export default class HomeScreen extends Component {
         inactiveTintColor: "grey"
       }}
       >
+<Tab.Screen
+         name="SocialScreen"
+         options={{
+          tabBarLabel: "",
+          tabBarIcon: ({color, size}) => (
+            <Ionicons 
+            style={{marginTop: 10}}
+            name={"ios-people"}
+            size={size}
+            color={color}
+            />
+          )
+        }}
+          component={SocialScreen} 
+          />
               <Tab.Screen
          name="Settings"
          options={{
@@ -47,21 +51,7 @@ export default class HomeScreen extends Component {
          }}
           component={SettingsScreen}
            />
-        <Tab.Screen
-         name="SocialScreen"
-         options={{
-          tabBarLabel: "",
-          tabBarIcon: ({color, size}) => (
-            <Ionicons 
-            style={{marginTop: 10}}
-            name={"ios-people"}
-            size={size}
-            color={color}
-            />
-          )
-        }}
-          component={SocialScreen} 
-          />
+      
   
              <Tab.Screen
          name="MessagesScreen"
@@ -80,7 +70,7 @@ export default class HomeScreen extends Component {
            />
       </Tab.Navigator>
       {/* </View> */}
-      </>
+            </>
     );
   }
 }

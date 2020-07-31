@@ -4,12 +4,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../Screens/SignInScreen';
 import Signup from '../Screens/SignUpScreen';
 import Home from '../Screens/HomeScreen';
+import Description from '../Screens/DescriptionScreen';
 import RestPassword from '../Screens/ForgotPassword';
 import { View, ActivityIndicator, StatusBar, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-// import {createAppContainer, createSwitchNavigator } from 'react-navigation';
+
 const Stack = createStackNavigator();
-// const AuthStack = createStackNavigator({Login : Login})
 
 class AuthLoadingScreen extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class AuthLoadingScreen extends Component {
   render() {
     return(
       <View style={styles.activity}>
-        <ActivityIndicator />
+        <ActivityIndicator/>
         <StatusBar barStyle="default"/>
       </View>
     )
@@ -30,7 +30,6 @@ class AuthLoadingScreen extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   activity: {
     flex: 1,
@@ -39,25 +38,6 @@ const styles = StyleSheet.create({
    
   }
 });
-
-
-
-
-
-// export default createAppContainer(createSwitchNavigator(
-  
-//   {
-    
-//     AuthLoading: AuthLoadingScreen,
-//     Login : Login,
-//     Signup:Signup,
-//     Home : Home,
-//     RestPassword: RestPassword
-//   },
-//   {
-//     initialRouteName: 'AuthLoading'
-//   }
-// ))
 
 
 export default class AppContainer extends Component {
@@ -101,8 +81,13 @@ export default class AppContainer extends Component {
        component={RestPassword} 
        options={{ header: () => null, animationEnabled: false }}
       />
+         <Stack.Screen 
+          name="Description" 
+          component={Description} 
+          options={{ header: () => null, animationEnabled: false }}
+      />
     </Stack.Navigator>
     </NavigationContainer>
   );
-  }
+    }   
    }

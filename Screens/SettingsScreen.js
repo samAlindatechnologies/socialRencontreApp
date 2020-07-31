@@ -3,6 +3,7 @@ import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, ScrollView, 
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from '../database/Fire';
 import {connect} from 'react-redux'
+// import { Avatar } from 'react-native-elements';
 class SettingsScreen extends Component {
   
   constructor(props) {
@@ -38,9 +39,21 @@ this.props.navigation.navigate('Login')
             <TouchableOpacity>
               <ImageBackground source={image} style={styles.image}>
             <View style={styles.pictureProfil} >
-              <Image source={image} style={styles.tinyLogo}></Image>
+            {/* <Avatar
+            style={styles.tinyLogo}
+              source={{
+              uri:
+                  'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                     }}
+              showEditButton
+            /> */}
+              <Image
+               source={image} 
+               style={styles.tinyLogo}
+               >
+
+               </Image>
             </View>
-             
               </ImageBackground>
             </TouchableOpacity>
           </View>
@@ -90,19 +103,18 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     flexDirection: "column",
-    // marginTop: 24
   },
   image: {
-    // resizeMode: "cover",
     justifyContent: "center",
     height: 200
   },
   pictureProfil : {
     justifyContent: "center",
     alignItems:"center",
+    
   },
     tinyLogo: {
-      // resizeMode: "cover",
+      resizeMode: "cover",
       height:65,
       width: 65,
       borderRadius: 150,

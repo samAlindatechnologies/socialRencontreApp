@@ -3,12 +3,10 @@ import {  Text, View, StyleSheet} from "react-native";
 
 export default class MessagesScreen extends Component {
     render() {
-  
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <View style={styles.swipeCards}>
-
-          <Text>Message!</Text>
+          <Text>Description!</Text>
           </View>
         </View>
       );
@@ -16,8 +14,8 @@ export default class MessagesScreen extends Component {
   }
 
 
-const styles = StyleSheet.create({
-      swipeCards: {
+  const styles = StyleSheet.create({
+    swipeCards: {
       width: 200,
       height: 400 ,
       backgroundColor: "white",
