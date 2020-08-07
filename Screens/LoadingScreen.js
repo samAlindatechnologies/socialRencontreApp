@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   logoText: {
     color: "#f2aaaa",
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 70,
     marginTop: 29.1,
     fontWeight: "300",
     justifyContent: "flex-end",

@@ -11,12 +11,11 @@ import {
   AppRegistry,
   ScrollView,
   Dimensions,
+  Picker,
 } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-import firebase from "../database/Fire";
-import Swiper from "react-native-web-swiper";
 
 export default class Signup extends Component {
   constructor() {
@@ -96,18 +95,62 @@ export default class Signup extends Component {
               // height: screenHeight,
             }}
           >
+            <View>
+              <Text>Vous êtes</Text>
+              <Picker
+                selectedValue={this.state.language}
+                style={{ height: 25, width: 200, borderRadius: 50 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ language: itemValue })
+                }
+              >
+                <Picker.Item label="Femme" value="Femme" />
+                <Picker.Item label="Homme" value="Homme" />
+              </Picker>
+            </View>
+            <View>
+              <Text>Vous recherchez</Text>
+              <Picker
+                selectedValue={this.state.language}
+                style={{ height: 25, width: 200, borderRadius: 50 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ language: itemValue })
+                }
+              >
+                <Picker.Item label="Femme" value="Femme" />
+                <Picker.Item label="Homme" value="Homme" />
+              </Picker>
+            </View>
+            <View>
+              <Text>Vous êtes la pour </Text>
+              <Picker
+                selectedValue={this.state.language}
+                style={{ height: 25, width: 200, borderRadius: 50 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  this.setState({ language: itemValue })
+                }
+              >
+                <Picker.Item label="Une histoire d'amour..." value="Femme" />
+                <Picker.Item label="M'amuser" value="M'amuser" />
+                <Picker.Item
+                  label="Rencontrer des nouvelles personnes"
+                  value="Rencontrer des nouvelles personnes"
+                />
+                <Picker.Item label="Essayer" value="Essayer" />
+              </Picker>
+            </View>
             {/* <TextInput
                 style={styles.textInput}
                 placeholder="Name"
                 value={this.state.displayName}
                 onChangeText={(txt) => this.handleChange("displayName", txt)}
               /> */}
-            {/* <Text
-                style={styles.loginText}
-                onPress={() => this.props.navigation.navigate("Login")}
-              >
-                Déjà un compte ? Se connecter
-              </Text> */}
+            <Text
+              style={styles.loginText}
+              onPress={() => this.props.navigation.navigate("Login")}
+            >
+              Déjà un compte ? Se connecter
+            </Text>
           </View>
           <View
             style={{
