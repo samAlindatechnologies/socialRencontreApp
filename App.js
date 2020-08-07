@@ -1,14 +1,19 @@
-import * as React from 'react';
-import AppContainer from './Component/Root'
-import {Provider} from 'react-redux'
-import Store from "./Store/configureStore"
+import React, { Component } from "react";
+import AppContainer from "./Component/Root";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { NavigationContainer } from "@react-navigation/native";
 
-export default class App extends React.Component {
+// const store = createStore();
+
+export default class App extends Component {
   render() {
     return (
-      <Provider store={Store}>       
+      // <Provider store={store}>
+      <NavigationContainer>
         <AppContainer />
-      </Provider>
-    )
+      </NavigationContainer>
+      // </Provider>
+    );
   }
 }

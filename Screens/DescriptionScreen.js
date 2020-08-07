@@ -1,32 +1,30 @@
-import React, { Component } from 'react';
-import {  Text, View, StyleSheet} from "react-native";
+import React, { Component } from "react";
+import { Text, View, StyleSheet } from "react-native";
 
 export default class MessagesScreen extends Component {
-    render() {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <View style={styles.swipeCards}>
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View style={styles.swipeCards}>
           <Text>Description!</Text>
-          </View>
         </View>
-      );
-    }
+      </View>
+    );
   }
+}
 
-
-  const styles = StyleSheet.create({
-    swipeCards: {
-      width: 200,
-      height: 400 ,
-      backgroundColor: "white",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 12,
-      },
-      shadowOpacity: 0.58,
-      shadowRadius: 16.00,
-      elevation: 24,
-    }
-  });
-  
+const styles = StyleSheet.create({
+  swipeCards: {
+    width: 200,
+    height: 400,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+    elevation: 24,
+  },
+});

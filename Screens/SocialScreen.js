@@ -5,10 +5,10 @@ import {
   View,
   Image,
   Modal,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import SwipeCards from "react-native-swipe-cards";
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons } from "@expo/vector-icons";
 import pictureProfil from "../images/femme.jpg";
 import popo from "../images/poyo.jpg";
 
@@ -31,19 +31,19 @@ export default class extends React.Component {
     super(props);
     this.state = {
       cards: [
-        { name: "Tomato", image: pictureProfil , age: 35},
+        { name: "Tomato", image: pictureProfil, age: 35 },
         { name: "Caro", image: popo },
         { name: "Marc", image: pictureProfil },
         { name: "Nina", image: pictureProfil },
         { name: "Zora", image: pictureProfil },
         { name: "Nina", image: pictureProfil },
       ],
-      modalVisible: false
+      modalVisible: false,
     };
   }
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-  }
+  };
 
   handleYup(card) {
     console.log(`Yup for ${card.name}`);
@@ -51,9 +51,6 @@ export default class extends React.Component {
   handleNope(card) {
     console.log(`Nope for ${card.name}`);
   }
-
-
-
 
   render() {
     // const totos = this.props.cards;
@@ -64,82 +61,66 @@ export default class extends React.Component {
           cards={this.state.cards}
           renderCard={(cardData) => (
             <>
-             <View style={styles.card}>
-              <View>
-                <Image
-                  style={styles.image}
-                  source={cardData.image} 
-                /> 
-
-              </View>
-              <View style={styles.bottomCard}>
-                <Text>{cardData.name}</Text>
-                <Text>{cardData.age}</Text>
-                  <TouchableOpacity  
-                    onPress={() => { this.props.navigation.navigate("Description")}}
-                   style={styles.buttonInfo}
+              <View style={styles.card}>
+                <View>
+                  <Image style={styles.image} source={cardData.image} />
+                </View>
+                <View style={styles.bottomCard}>
+                  <Text>{cardData.name}</Text>
+                  <Text>{cardData.age}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate("Description");
+                    }}
+                    style={styles.buttonInfo}
                   >
-                    <Ionicons 
-                      name="ios-information" 
-                      size={35} 
-                      color="white" />
+                    <Ionicons name="ios-information" size={35} color="white" />
                   </TouchableOpacity>
-              </View>  
-            </View>
-          </>
+                </View>
+              </View>
+            </>
           )}
           renderNoMoreCards={() => <NoMoreCards />}
           handleYup={this.handleYup}
           handleNope={this.handleNope}
           useNativeDriver={true}
         />
-    
 
-      {/* Modal pour afficher la desciption  */}
+        {/* Modal pour afficher la desciption  */}
 
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            console.log("Modal has been closed.")
-          }} 
-          > 
-          
+            console.log("Modal has been closed.");
+          }}
+        >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-
               <TouchableOpacity
-               style={{marginTop: 90}}
+                style={{ marginTop: 90 }}
                 onPress={() => {
                   this.setModalVisible(!modalVisible);
                 }}
               >
-                 <Ionicons
-            name={"ios-arrow-dropdown-circle"}
-            size={40}
-            color={"gray"}
-            />
+                <Ionicons
+                  name={"ios-arrow-dropdown-circle"}
+                  size={40}
+                  color={"gray"}
+                />
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
-      {/* Bouton valider ou refuser */}
+        {/* Bouton valider ou refuser */}
         <View style={styles.button}>
           <TouchableOpacity style={styles.buttonLike}>
-          <Ionicons 
-          name="ios-heart-dislike" 
-          size={35}
-          color={"#F04F23"} 
-           />
+            <Ionicons name="ios-heart-dislike" size={35} color={"#F04F23"} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonLike}>
-            <Ionicons 
-            name="ios-heart" 
-            size={35} 
-            color="#09F181"
-            />
+            <Ionicons name="ios-heart" size={35} color="#09F181" />
           </TouchableOpacity>
         </View>
       </>
@@ -161,8 +142,8 @@ const styles = StyleSheet.create({
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    
+    shadowRadius: 16.0,
+
     elevation: 24,
   },
   noMoreCardsText: {
@@ -172,24 +153,24 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     // position: "relative",
-    // width: 375, 
+    // width: 375,
     // height: 400,
     // flex: 1,
-    aspectRatio: 1.5, 
+    aspectRatio: 1.5,
     resizeMode: "contain",
   },
   button: {
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   centeredView: {
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    marginBottom: 50
+    marginBottom: 50,
   },
   modalView: {
-    height:"100%",
+    height: "100%",
     width: 500,
     backgroundColor: "white",
     borderRadius: 20,
@@ -197,7 +178,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 200
+      height: 200,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -205,15 +186,15 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
-  }, 
+    textAlign: "center",
+  },
   modalRemove: {
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   buttonLike: {
     backgroundColor: "white",
@@ -222,14 +203,14 @@ const styles = StyleSheet.create({
     width: 60,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom:10,
+    marginBottom: 10,
     shadowOffset: {
       width: 0,
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    
+    shadowRadius: 16.0,
+
     elevation: 24,
   },
   buttonInfo: {
@@ -238,21 +219,19 @@ const styles = StyleSheet.create({
     width: 20,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom:10,
-    borderRadius:50,
+    marginBottom: 10,
+    borderRadius: 50,
     shadowOffset: {
       width: 0,
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    
+    shadowRadius: 16.0,
+
     elevation: 24,
   },
   bottomCard: {
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
 });
-
-
