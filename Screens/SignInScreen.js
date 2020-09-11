@@ -11,14 +11,15 @@ import {
   Image,
   Form,
   Item,
+  AsyncStorage,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import firebase from "../database/Fire";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 import Logo from "../images/yxxyV1.png";
-
+import User from "../User";
 export default class Login extends Component {
   constructor() {
     super();
@@ -42,11 +43,7 @@ export default class Login extends Component {
   userLogin = async () => {
     if (this.state.email === "" && this.state.password === "") {
       Alert.alert("Enter details to signin!");
-    }
-    //     else if (firebase.auth().currentUser.email === this.state.email && firebase.auth().currentUser.password === this.state.password) {
-    // Alert.alert('email ou mot de passe incorrect!')
-    //     }
-    else {
+    } else {
       this.setState({
         isLoading: true,
       });
@@ -117,12 +114,14 @@ export default class Login extends Component {
               <TextInput
                 style={styles.textInput}
                 placeholder="Email"
+                placeholderTextColor={"white"}
                 value={this.state.email}
                 onChangeText={(val) => this.updateInputVal(val, "email")}
               />
               <TextInput
                 style={styles.textInput}
                 placeholder="Password"
+                placeholderTextColor={"white"}
                 value={this.state.password}
                 onChangeText={(val) => this.updateInputVal(val, "password")}
                 maxLength={15}
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   underButton: {
-    marginTop: 15,
+    marginBottom: 15,
     color: "#e36387",
     textDecorationLine: "underline",
   },

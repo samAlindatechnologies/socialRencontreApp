@@ -31,6 +31,7 @@ export default class LoadingScreen extends Component {
         tension: 10,
         friction: 2,
         duration: 1000,
+        // useNativeDriver: true,
       }).start(),
 
       Animated.timing(LogoText, {

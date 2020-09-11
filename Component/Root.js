@@ -7,11 +7,16 @@ import Signup from "../Screens/SignUpScreen";
 import Home from "../Screens/HomeScreen";
 import Description from "../Screens/DescriptionScreen";
 import RestPassword from "../Screens/ForgotPassword";
-import { View, ActivityIndicator, StatusBar, StyleSheet } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-
+import {
+  View,
+  ActivityIndicator,
+  StatusBar,
+  StyleSheet,
+  AsyncStorage,
+} from "react-native";
+import User from "../User";
 import { Router, Scene } from "react-native-router-flux";
-
+import firebase from "../database/Fire";
 // const Stack = createStackNavigator();
 
 class AuthLoadingScreen extends Component {
@@ -19,6 +24,16 @@ class AuthLoadingScreen extends Component {
     super(props);
     this._loadData();
   }
+  // componentWillMount() {
+  //   firebase;
+  // }
+
+  _loadData = async () => {
+    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+    this.props.navigation.navigate(isLoggedIn !== "1" ? "Login" : "Home");
+    // User.email = await AsyncStorage.getItem("userEmail");
+    // this.props.navigation.navigate(User.email ? "Home" : "Login");
+  };
   render() {
     return (
       <View style={styles.activity}>
@@ -27,10 +42,6 @@ class AuthLoadingScreen extends Component {
       </View>
     );
   }
-  _loadData = async () => {
-    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
-    this.props.navigation.navigate(isLoggedIn !== "1" ? "Login" : "Home");
-  };
 }
 
 const styles = StyleSheet.create({

@@ -6,6 +6,7 @@ import {
   TextInput,
   SafeAreaView,
   Alert,
+  AsyncStorage,
   ActivityIndicator,
   TouchableOpacity,
   AppRegistry,
@@ -16,33 +17,66 @@ import {
 // import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-
+import firebase from "../database/Fire";
+// import AsyncStorage from "@react-native-community/async-storage";
+import { UserInterfaceIdiom } from "expo-constants";
+import User from "../User";
 export default class Signup extends Component {
   constructor() {
     super();
-    // this.email = this.email.bind(this);
     this.state = {
       isLoading: false,
       displayName: "",
       email: "",
-      password: "",
+      password1: "",
+      password2: "",
+      pseudo: "",
+      description: "",
     };
   }
-  handleChange(name, value) {
-    this.setState({ [name]: value });
-    console.log();
+  onSubmit = () => {
+    this.setState();
+  };
+  handleChange(key, value) {
+    this.setState({ [key]: value });
+  }
+  updateInputVal = (val, prop) => {
+    const state = this.state;
+    state[prop] = val;
+    this.setState(state);
+    // console.log(this.state.email, "email");
+  };
+
+  componentWillMount() {
+    AsyncStorage.getItem("userEmail").then((val) => {
+      if (val) {
+        this.setState({ phone: val });
+      }
+    });
   }
 
-  registerUser = () => {
-    if (this.state.email === "" && this.state.password === "") {
+  submitForm = async () => {
+    if (
+      this.state.email === "" &&
+      this.state.password1 === "" &&
+      this.state.password2 === ""
+    ) {
       Alert.alert("Enter details to signup!");
+    } else if (this.state.password1 !== this.state.password2) {
+      Alert.alert("Les mots de passe ne correspond pas!");
     } else {
-      this.setState({
-        isLoading: true,
-      });
+      await AsyncStorage.setItem("userPseudo", this.state.pseudo);
+      User.pseudo = this.state.pseudo;
+      firebase
+        .database()
+        .ref(`users/` + User.pseudo)
+        .set({
+          email: this.state.email,
+          password1: this.state.password1,
+        });
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .createUserWithEmailAndPassword(this.state.email, this.state.password1)
         .then((res) => {
           res.user.updateProfile({
             displayName: this.state.displayName,
@@ -52,13 +86,44 @@ export default class Signup extends Component {
             isLoading: false,
             displayName: "",
             email: "",
-            password: "",
+            password1: "",
+            password2: "",
           });
-          this.props.navigation.navigate("Login");
-        })
-        .catch((error) => this.setState({ errorMessage: error.message }));
+        });
+      this.props.navigation.navigate("Home");
     }
   };
+  // registerUser = () => {
+  //   if (
+  //     this.state.email === "" &&
+  //     this.state.password1 === "" &&
+  //     this.state.password2 === ""
+  //   ) {
+  //     Alert.alert("Enter details to signup!");
+  //   } else {
+  //     this.setState({
+  //       isLoading: true,
+  //     });
+  //     firebase
+  //       .auth()
+  //       .createUserWithEmailAndPassword(this.state.email, this.state.password1)
+  //       .then((res) => {
+  //         res.user.updateProfile({
+  //           displayName: this.state.displayName,
+  //         });
+  //         console.log("User registered successfully!");
+  //         this.setState({
+  //           isLoading: false,
+  //           displayName: "",
+  //           email: "",
+  //           password1: "",
+  //           password2: "",
+  //         });
+  //         this.props.navigation.navigate("Login");
+  //       })
+  //       .catch((error) => this.setState({ errorMessage: error.message }));
+  //   }
+  // };
 
   render() {
     if (this.state.isLoading) {
@@ -85,6 +150,8 @@ export default class Signup extends Component {
               height: "100%",
             }}
           />
+
+          {/* Screen 1 */}
           <View
             style={{
               backgroundColor: "rgba(20,20,200,0.3)",
@@ -95,50 +162,56 @@ export default class Signup extends Component {
               // height: screenHeight,
             }}
           >
-            <View>
-              <Text>Vous êtes</Text>
-              <Picker
-                selectedValue={this.state.language}
-                style={{ height: 25, width: 200, borderRadius: 50 }}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ language: itemValue })
-                }
-              >
-                <Picker.Item label="Femme" value="Femme" />
-                <Picker.Item label="Homme" value="Homme" />
-              </Picker>
+            <View style={styles.questions}>
+              <View>
+                <Text>Vous êtes ☺</Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 25, width: 200, borderRadius: 50 }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item label="Femme" value="Femme" />
+                  <Picker.Item label="Homme" value="Homme" />
+                </Picker>
+              </View>
+              <View>
+                <Text>Vous recherchez</Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 25, width: 200, borderRadius: 50 }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item label="Femme" value="Femme" />
+                  <Picker.Item label="Homme" value="Homme" />
+                </Picker>
+              </View>
+              <View>
+                <Text>Vous êtes la pour </Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 25, width: 200, borderRadius: 50 }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item
+                    label="Une histoire d'amour"
+                    value="Une histoire d'amour"
+                  />
+                  <Picker.Item label="M'amuser" value="M'amuser" />
+                  <Picker.Item
+                    label="Rencontrer des nouvelles personnes"
+                    value="Rencontrer des nouvelles personnes"
+                  />
+                  <Picker.Item label="Essayer" value="Essayer" />
+                </Picker>
+              </View>
             </View>
-            <View>
-              <Text>Vous recherchez</Text>
-              <Picker
-                selectedValue={this.state.language}
-                style={{ height: 25, width: 200, borderRadius: 50 }}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ language: itemValue })
-                }
-              >
-                <Picker.Item label="Femme" value="Femme" />
-                <Picker.Item label="Homme" value="Homme" />
-              </Picker>
-            </View>
-            <View>
-              <Text>Vous êtes la pour </Text>
-              <Picker
-                selectedValue={this.state.language}
-                style={{ height: 25, width: 200, borderRadius: 50 }}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ language: itemValue })
-                }
-              >
-                <Picker.Item label="Une histoire d'amour..." value="Femme" />
-                <Picker.Item label="M'amuser" value="M'amuser" />
-                <Picker.Item
-                  label="Rencontrer des nouvelles personnes"
-                  value="Rencontrer des nouvelles personnes"
-                />
-                <Picker.Item label="Essayer" value="Essayer" />
-              </Picker>
-            </View>
+
             {/* <TextInput
                 style={styles.textInput}
                 placeholder="Name"
@@ -152,6 +225,9 @@ export default class Signup extends Component {
               Déjà un compte ? Se connecter
             </Text>
           </View>
+
+          {/* Screen 2 */}
+
           <View
             style={{
               backgroundColor: "rgba(20,200,20,0.3)",
@@ -162,17 +238,132 @@ export default class Signup extends Component {
               // height: screenHeight,
             }}
           >
+            <View style={styles.questions}>
+              <View>
+                <Text>Votre age</Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 25, width: 200, color: "blue" }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item label="1" value="1" />
+                  <Picker.Item label="2" value="2" />
+                  <Picker.Item label="3" value="3" />
+                  <Picker.Item label="4" value="4" />
+                  <Picker.Item label="5" value="5" />
+                  <Picker.Item label="6" value="6" />
+                  <Picker.Item label="7" value="7" />
+                  <Picker.Item label="8" value="8" />
+                  <Picker.Item label="9" value="9" />
+                  <Picker.Item label="10" value="10" />
+                  <Picker.Item label="11" value="11" />
+                  <Picker.Item label="12" value="12" />
+                  <Picker.Item label="13" value="13" />
+                  <Picker.Item label="14" value="14" />
+                  <Picker.Item label="15" value="15" />
+                  <Picker.Item label="16" value="16" />
+                  <Picker.Item label="17" value="17" />
+                  <Picker.Item label="18" value="18" />
+                  <Picker.Item label="19" value="19" />
+                  <Picker.Item label="20" value="20" />
+                  <Picker.Item label="21" value="21" />
+                  <Picker.Item label="22" value="22" />
+                </Picker>
+              </View>
+              <View>
+                <Text>Vous habitez</Text>
+                <Picker
+                  selectedValue={this.state.language}
+                  style={{ height: 25, width: 200, borderRadius: 50 }}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ language: itemValue })
+                  }
+                >
+                  <Picker.Item
+                    label="Auvergne-Rhône-Alpes"
+                    value="Auvergne-Rhône-Alpes"
+                  />
+                  <Picker.Item
+                    label="Bourgogne-Franche-Conté"
+                    value="Bourgogne-Franche-Conté"
+                  />
+                  <Picker.Item label="Bretagne" value="Bretagne" />
+                  <Picker.Item
+                    label="Centre-Val de Loire"
+                    value="Centre-Val de Loire"
+                  />
+                  <Picker.Item label="Corse" value="Corse" />
+                  <Picker.Item label="Grand Est" value="Grand Est" />
+                  <Picker.Item
+                    label="Hauts-de-France"
+                    value="Hauts-de-France"
+                  />
+                  <Picker.Item label="Île-de-France" value="Île-de-France" />
+                  <Picker.Item label="Normandie" value="Normandie" />
+                  <Picker.Item
+                    label="Nouvelle-Aquitaine"
+                    value="Nouvelle-Aquitaine"
+                  />
+                  <Picker.Item label="Occitanie" value="Occitanie" />
+                  <Picker.Item
+                    label="Pays de la Loire"
+                    value="Pays de la Loire"
+                  />
+                  <Picker.Item
+                    label="Provence-Alpes-Côte d'Azur"
+                    value="Provence-Alpes-Côte d'Azur"
+                  />
+                  <Picker.Item label="Guadeloupe" value="Guadeloupe" />
+                  <Picker.Item label="Martinique" value="Martinique" />
+                  <Picker.Item label="Guyane" value="Guyane" />
+                  <Picker.Item label="La Réunion" value="La Réunion" />
+                  <Picker.Item label="Mayotte" value="Mayotte" />
+                </Picker>
+              </View>
+              <View>
+                {/* <Text>Pseudo</Text> */}
+                {/* <TextInput
+                  style={styles.textInput}
+                  placeholder="Pseudo"
+                  value={this.state.pseudo}
+                  onChangeText={(val) => this.updateInputVal(val, "Pseudo")}
+                  maxLength={15}
+                  secureTextEntry={true}
+                /> */}
+
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Pseudo"
+                  placeholderTextColor={"white"}
+                  onChangeText={(val) => this.updateInputVal(val, "pseudo")}
+                  value={this.state.pseudo}
+                />
+              </View>
+              <View>
+                {/* <Text>Description</Text> */}
+                <TextInput
+                  style={styles.textInputDescription}
+                  placeholder="Description"
+                  placeholderTextColor={"white"}
+                  onChangeText={(val) =>
+                    this.updateInputVal(val, "description")
+                  }
+                  value={this.state.description}
+                />
+              </View>
+            </View>
             <Text
-              style={{
-                fontSize: 20,
-                padding: 15,
-                color: "white",
-                textAlign: "center",
-              }}
+              style={styles.loginText}
+              onPress={() => this.props.navigation.navigate("Login")}
             >
-              Screen 2
+              Déjà un compte ? Se connecter
             </Text>
           </View>
+
+          {/* screen 3 */}
+
           <View
             style={{
               backgroundColor: "rgba(200,20,20,0.3)",
@@ -183,58 +374,52 @@ export default class Signup extends Component {
               // height: screenHeight,
             }}
           >
-            <Text
-              style={{
-                fontSize: 20,
-                padding: 15,
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              Screen 3
-            </Text>
-          </View>
-        </ScrollView>
-        {/* <ScrollView bounces={false} contentContainerStyle={styles.container}>
-          <KeyboardAwareScrollView extraScrollHeight={110}>
-          <SafeAreaView>
-          <Swiper>
             <View style={styles.container}>
               <Text style={styles.title}>Rejoignez-nous !</Text>
-              <TextInput
-                style={styles.inputStyle}
-                placeholder="Name"
-                value={this.state.displayName}
-                onChangeText={(val) => this.updateInputVal(val, "displayName")}
-              />
 
               <TextInput
                 style={styles.inputStyle}
                 placeholder="Email"
+                placeholderTextColor={"white"}
                 value={this.state.email}
                 onChangeText={(val) => this.updateInputVal(val, "email")}
               />
               <TextInput
                 style={styles.inputStyle}
                 placeholder="Password"
-                value={this.state.password}
-                onChangeText={(val) => this.updateInputVal(val, "password")}
+                placeholderTextColor={"white"}
+                value={this.state.password1}
+                onChangeText={(val) => this.updateInputVal(val, "password1")}
+                maxLength={15}
+                secureTextEntry={true}
+              />
+              <TextInput
+                style={styles.inputStyle}
+                placeholder="Password"
+                placeholderTextColor={"white"}
+                value={this.state.password2}
+                onChangeText={(val) => this.updateInputVal(val, "password2")}
                 maxLength={15}
                 secureTextEntry={true}
               />
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.registerUser()}
+                onPress={() => this.submitForm()}
               >
+                {/* this.registerUser() */}
                 <LinearGradient
                   colors={["#e36387", "#f2aaaa"]}
                   start={{ x: 0, y: 1 }}
                   end={{ x: 1, y: 0 }}
                   style={styles.gradient}
                 >
-                  <Text style={styles.buttonText}> Se connecter</Text>
+                  <Text style={styles.buttonText}> Let's Go</Text>
                 </LinearGradient>
               </TouchableOpacity>
+              <Text style={styles.text}>
+                * Et comme votre anonyma et important pour nous et vous
+                appartient, nous vous en demandons pas plus{" "}
+              </Text>
               <Text
                 style={styles.loginText}
                 onPress={() => this.props.navigation.navigate("Login")}
@@ -242,10 +427,8 @@ export default class Signup extends Component {
                 Déjà un compte ? Se connecter
               </Text>
             </View>
-          </Swiper>
-          </SafeAreaView>
-          </KeyboardAwareScrollView>
-        </ScrollView> */}
+          </View>
+        </ScrollView>
       </>
     );
   }
@@ -254,15 +437,27 @@ export default class Signup extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textInput: {
     borderBottomColor: "white",
     borderBottomWidth: 1,
-    width: 330,
+    width: 200,
     height: 45,
     marginBottom: 30,
     paddingLeft: 15,
-    color: "blue",
+    color: "white",
+  },
+  textInputDescription: {
+    borderColor: "white",
+    borderWidth: 1,
+    width: 200,
+    height: 105,
+    marginBottom: 30,
+    paddingLeft: 15,
+    color: "white",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
@@ -286,6 +481,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
+    color: "white",
   },
   buttonText: {
     color: "white",
@@ -302,13 +498,17 @@ const styles = StyleSheet.create({
     color: "white",
   },
   buttonText: {
-    color: "#3770B5",
+    color: "white",
     fontSize: 24,
   },
   loginText: {
     marginTop: 15,
     color: "white",
     textDecorationLine: "underline",
+  },
+  text: {
+    color: "white",
+    textAlign: "center",
   },
   gradient: {
     justifyContent: "center",
@@ -322,13 +522,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  // slide1: {
-  //   backgroundColor: "rgba(20,20,200,0.3)",
-  // },
-  // slide2: {
-  //   backgroundColor: "rgba(20,200,20,0.3)",
-  // },
-  // slide3: {
-  //   backgroundColor: "rgba(200,20,20,0.3)",
-  // },
+  questions: {
+    alignItems: "center",
+    justifyContent: "space-around",
+    height: "70%",
+  },
 });
