@@ -11,26 +11,27 @@ import {
   Image,
   Form,
   Item,
-  AsyncStorage,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import firebase from "../database/Fire";
-// import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
 import Logo from "../images/yxxyV1.png";
-import User from "../User";
+import axios from "axios";
+
 export default class Login extends Component {
   constructor() {
     super();
     this.state = {
       email: "",
+      pseudo: "",
       password: "",
       isLoading: false,
       uid: "",
       name: "",
     };
   }
+
   onSubmit = () => {
     this.setState();
   };
@@ -41,29 +42,39 @@ export default class Login extends Component {
   };
 
   userLogin = async () => {
-    if (this.state.email === "" && this.state.password === "") {
-      Alert.alert("Enter details to signin!");
+    const { email, password } = this.state;
+    if (
+      (!this.state.email && !this.state.password) ||
+      (this.state.email && !this.state.password) ||
+      (!this.state.email && this.state.password)
+    ) {
+      Alert.alert("Enter details to signin please!");
     } else {
       this.setState({
         isLoading: true,
       });
-      await AsyncStorage.setItem("isLoggedIn", "1");
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => {
-          // console.log(res)
-          this.setState({
-            isLoading: false,
-            email: "",
-            password: "",
-            uid: "",
-            name: res.user.displayName,
-          });
-          console.log(this.state.name);
-          this.props.navigation.navigate("Home");
+      await axios
+        .post("http://10.0.2.2:3000/signin", {
+          email: email,
+          password: password,
         })
-        .catch((error) => this.setState({ errorMessage: error.message }));
+        .then(async (response) => {
+          // console.log(response.data);
+          if (response.data.message === "User not found") {
+            alert("Cet utilisateur n'existe pas");
+            this.props.navigation.navigate("Login");
+          } else if (response.data.message === "Access denied") {
+            alert("Username or password incorrect");
+            this.props.navigation.navigate("Login");
+          } else {
+            //J'enregistre mon token dans mes AsyncStorage
+            const token = response.data.token;
+            await AsyncStorage.setItem("token", token);
+            // const voila = await AsyncStorage.getItem("token");
+            // console.log(voila);
+            this.props.navigation.navigate("Home");
+          }
+        });
     }
   };
 

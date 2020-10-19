@@ -10,12 +10,18 @@ import {
 import Logo from "../images/yxxyV1.png";
 import { Actions } from "react-native-router-flux";
 import { LinearGradient } from "expo-linear-gradient";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const switchtoAuth = () => {
-  Actions.replace("Auth");
-  //   navigation.navigate("AuthLoading");
+const switchtoAuth = async () => {
+  const token = await AsyncStorage.getItem("token");
+  if (!token) {
+    Actions.replace("Auth");
+  } else {
+    Actions.replace("Home");
+    this.props.navigation.navigate("Home");
+  }
+  // console.log(token, "token du loading");
 };
-
 export default class LoadingScreen extends Component {
   state = {
     LogoAnime: new Animated.Value(0),
@@ -31,12 +37,12 @@ export default class LoadingScreen extends Component {
         tension: 10,
         friction: 2,
         duration: 1000,
-        // useNativeDriver: true,
       }).start(),
 
       Animated.timing(LogoText, {
         toValue: 1,
         duration: 1200,
+        useNativeDriver: true,
       }),
     ]).start(() => {
       this.setState({

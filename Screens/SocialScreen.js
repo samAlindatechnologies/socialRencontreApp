@@ -130,7 +130,7 @@ export default class SocialScreen extends React.Component {
                   opacity: this.likeOpacity,
                   transform: [{ rotate: "-30deg" }],
                   position: "absolute",
-                  top: 50,
+                  // top: 50,
                   left: 40,
                   zIndex: 1000,
                 }}
@@ -153,8 +153,8 @@ export default class SocialScreen extends React.Component {
                 style={{
                   opacity: this.dislikeOpacity,
                   transform: [{ rotate: "30deg" }],
-                  position: "absolute",
-                  top: 50,
+                  // position: "absolute",
+                  // top: 50,
                   right: 40,
                   zIndex: 1000,
                 }}
@@ -229,7 +229,7 @@ export default class SocialScreen extends React.Component {
                   opacity: 0,
                   transform: [{ rotate: "30deg" }],
                   position: "absolute",
-                  top: 50,
+                  // top: 50,
                   right: 40,
                   zIndex: 1000,
                 }}

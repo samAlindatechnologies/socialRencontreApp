@@ -14,9 +14,7 @@ import {
   StyleSheet,
   AsyncStorage,
 } from "react-native";
-import User from "../User";
 import { Router, Scene } from "react-native-router-flux";
-import firebase from "../database/Fire";
 // const Stack = createStackNavigator();
 
 class AuthLoadingScreen extends Component {
@@ -24,15 +22,10 @@ class AuthLoadingScreen extends Component {
     super(props);
     this._loadData();
   }
-  // componentWillMount() {
-  //   firebase;
-  // }
 
   _loadData = async () => {
     const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
     this.props.navigation.navigate(isLoggedIn !== "1" ? "Login" : "Home");
-    // User.email = await AsyncStorage.getItem("userEmail");
-    // this.props.navigation.navigate(User.email ? "Home" : "Login");
   };
   render() {
     return (

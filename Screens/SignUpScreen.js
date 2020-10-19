@@ -6,7 +6,6 @@ import {
   TextInput,
   SafeAreaView,
   Alert,
-  AsyncStorage,
   ActivityIndicator,
   TouchableOpacity,
   AppRegistry,
@@ -17,26 +16,24 @@ import {
 // import { ScrollView } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { LinearGradient } from "expo-linear-gradient";
-import firebase from "../database/Fire";
-// import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
 import { UserInterfaceIdiom } from "expo-constants";
-import User from "../User";
+import axios from "axios";
+import { Actions } from "react-native-router-flux";
 export default class Signup extends Component {
   constructor() {
     super();
     this.state = {
-      isLoading: false,
-      displayName: "",
+      // isLoading: false,
+      // displayName: "",
       email: "",
       password1: "",
-      password2: "",
+      // password2: "",
       pseudo: "",
-      description: "",
+      // description: "",
     };
   }
-  onSubmit = () => {
-    this.setState();
-  };
+
   handleChange(key, value) {
     this.setState({ [key]: value });
   }
@@ -44,86 +41,33 @@ export default class Signup extends Component {
     const state = this.state;
     state[prop] = val;
     this.setState(state);
-    // console.log(this.state.email, "email");
   };
-
-  componentWillMount() {
-    AsyncStorage.getItem("userEmail").then((val) => {
-      if (val) {
-        this.setState({ phone: val });
-      }
-    });
-  }
 
   submitForm = async () => {
-    if (
-      this.state.email === "" &&
-      this.state.password1 === "" &&
-      this.state.password2 === ""
-    ) {
-      Alert.alert("Enter details to signup!");
-    } else if (this.state.password1 !== this.state.password2) {
-      Alert.alert("Les mots de passe ne correspond pas!");
-    } else {
-      await AsyncStorage.setItem("userPseudo", this.state.pseudo);
-      User.pseudo = this.state.pseudo;
-      firebase
-        .database()
-        .ref(`users/` + User.pseudo)
-        .set({
-          email: this.state.email,
-          password1: this.state.password1,
-        });
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password1)
-        .then((res) => {
-          res.user.updateProfile({
-            displayName: this.state.displayName,
-          });
-          console.log("User registered successfully!");
-          this.setState({
-            isLoading: false,
-            displayName: "",
-            email: "",
-            password1: "",
-            password2: "",
-          });
-        });
-      this.props.navigation.navigate("Home");
+    const { pseudo, email, password1, password2 } = this.state;
+
+    if (password1 !== password2) {
+      alert("Passwords are not matching");
     }
+    axios
+      .post("http://10.0.2.2:3000/signup", {
+        email: email,
+        password: password1,
+        pseudo: pseudo,
+      })
+      .then(async (response) => {
+        // console.log("la rep de la response:", response);
+        const token = response.data.token;
+        console.log("le token est:", token);
+        if (response.data.message === "must provide email") {
+          alert("Cet email est déjà utilisé");
+        } else {
+          await AsyncStorage.setItem("token", token);
+          Actions.replace("Login");
+          // this.props.navigation.navigate("Home");
+        }
+      });
   };
-  // registerUser = () => {
-  //   if (
-  //     this.state.email === "" &&
-  //     this.state.password1 === "" &&
-  //     this.state.password2 === ""
-  //   ) {
-  //     Alert.alert("Enter details to signup!");
-  //   } else {
-  //     this.setState({
-  //       isLoading: true,
-  //     });
-  //     firebase
-  //       .auth()
-  //       .createUserWithEmailAndPassword(this.state.email, this.state.password1)
-  //       .then((res) => {
-  //         res.user.updateProfile({
-  //           displayName: this.state.displayName,
-  //         });
-  //         console.log("User registered successfully!");
-  //         this.setState({
-  //           isLoading: false,
-  //           displayName: "",
-  //           email: "",
-  //           password1: "",
-  //           password2: "",
-  //         });
-  //         this.props.navigation.navigate("Login");
-  //       })
-  //       .catch((error) => this.setState({ errorMessage: error.message }));
-  //   }
-  // };
 
   render() {
     if (this.state.isLoading) {
@@ -152,7 +96,7 @@ export default class Signup extends Component {
           />
 
           {/* Screen 1 */}
-          <View
+          {/* <View
             style={{
               backgroundColor: "rgba(20,20,200,0.3)",
               flex: 1,
@@ -185,7 +129,7 @@ export default class Signup extends Component {
                     this.setState({ language: itemValue })
                   }
                 >
-                  <Picker.Item label="Femme" value="Femme" />
+                  <Picker.Item label="Femmee" value="Femme" />
                   <Picker.Item label="Homme" value="Homme" />
                 </Picker>
               </View>
@@ -211,20 +155,13 @@ export default class Signup extends Component {
                 </Picker>
               </View>
             </View>
-
-            {/* <TextInput
-                style={styles.textInput}
-                placeholder="Name"
-                value={this.state.displayName}
-                onChangeText={(txt) => this.handleChange("displayName", txt)}
-              /> */}
             <Text
               style={styles.loginText}
               onPress={() => this.props.navigation.navigate("Login")}
             >
               Déjà un compte ? Se connecter
             </Text>
-          </View>
+          </View> */}
 
           {/* Screen 2 */}
 
@@ -323,16 +260,6 @@ export default class Signup extends Component {
                 </Picker>
               </View>
               <View>
-                {/* <Text>Pseudo</Text> */}
-                {/* <TextInput
-                  style={styles.textInput}
-                  placeholder="Pseudo"
-                  value={this.state.pseudo}
-                  onChangeText={(val) => this.updateInputVal(val, "Pseudo")}
-                  maxLength={15}
-                  secureTextEntry={true}
-                /> */}
-
                 <TextInput
                   style={styles.textInput}
                   placeholder="Pseudo"
@@ -342,7 +269,6 @@ export default class Signup extends Component {
                 />
               </View>
               <View>
-                {/* <Text>Description</Text> */}
                 <TextInput
                   style={styles.textInputDescription}
                   placeholder="Description"
@@ -406,7 +332,6 @@ export default class Signup extends Component {
                 style={styles.button}
                 onPress={() => this.submitForm()}
               >
-                {/* this.registerUser() */}
                 <LinearGradient
                   colors={["#e36387", "#f2aaaa"]}
                   start={{ x: 0, y: 1 }}
